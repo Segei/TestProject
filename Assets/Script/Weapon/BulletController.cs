@@ -5,23 +5,24 @@ using UnityEngine;
 
 namespace Assets.Script.Weapon
 {
-    public class BulletController : MonoBehaviour
+    public abstract class BulletController : MonoBehaviour
     {
-        [SerializeField] private float timeToDestruction;
-        private Vector3 _pointToMovement;
-        [SerializeField] private float _damage;
-        [SerializeField] private float _speed;
-        private Unit unit;
+        [SerializeField] protected float timeToDestruction = 1;        
+        [SerializeField] protected float damage = 1;
+        [SerializeField] protected float speed = 1;
+
+        protected Unit unit;
+        protected Vector3 _pointToMovement;
         public void Initialize(Vector3 pointToMovement)
         {
             _pointToMovement = pointToMovement;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        protected void OnCollisionEnter(Collision collision)
         {
             if (collision.transform.gameObject.TryGetComponent(out unit))
             {
-                unit.TryCatchDamage(_damage);
+                unit.TryCatchDamage(damage);
             }
             Disable();
         }
@@ -29,7 +30,11 @@ namespace Assets.Script.Weapon
         {
             if (timeToDestruction > 0)
             {
-                gameObject.transform.Translate(_pointToMovement * _speed * Time.deltaTime);
+                gameObject.transform.Translate(_pointToMovement * speed * Time.deltaTime);
+            }
+            if (timeToDestruction <= 0)
+            {
+                Disable();
             }
             timeToDestruction -= Time.deltaTime;
         }
@@ -39,7 +44,7 @@ namespace Assets.Script.Weapon
             {
                 if (t.TryGetComponent<LabelPool>(out var marcer))
                 {
-                    gameObject.transform.parent = marcer.gameObject.transform.parent;
+                    gameObject.transform.parent = marcer.gameObject.transform;
                     gameObject.transform.localPosition = Vector3.zero;
                     gameObject.SetActive(false);
                 }

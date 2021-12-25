@@ -5,15 +5,18 @@ using UnityEngine.AI;
 
 namespace Assets.Script.Units
 {
-    public class Unit : MonoBehaviour
-    {
+    public abstract class Unit : MonoBehaviour
+    { 
+        [SerializeField] protected float timeToDestroyDefaultValue = 5;
+        [SerializeField] protected float healsPoint = 5;
+        
         protected NavMeshAgent nav;
         protected Animator animator;
-        [SerializeField] protected float _hitPoint;
-        private bool died;
-        private float timeToDestroy;
+        protected bool died = false;
+        protected float timeToDestroy;
+       
 
-        private void Start()
+        protected virtual void Start()
         {
             gameObject.TryGetComponent(out nav);
             gameObject.TryGetComponent(out animator);
@@ -22,16 +25,36 @@ namespace Assets.Script.Units
         }
         public void TryCatchDamage(float Damage)
         {
-
+            if (!died)
+            {
+                healsPoint -= Damage;
+                if (healsPoint <= 0)
+                {
+                    healsPoint = 0;
+                    Death();
+                }
+            }
         }
 
-        private void Update()
+        protected void Update()
         {
             animator.SetFloat(name = "Speed", nav.velocity.magnitude);
+            if (died && timeToDestroy < 0)
+            {
+                Destroy(gameObject);
+            }
+            if(died && timeToDestroy > 0)
+            {
+                timeToDestroy -= Time.deltaTime;
+            }
+            if (!died)
+                Active();
         }
+        protected abstract void Active();
         protected virtual void Death()
         {
-            
+            died = true;
+            timeToDestroy = timeToDestroyDefaultValue;
         }
 
     }
