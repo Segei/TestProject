@@ -7,19 +7,26 @@ namespace Assets.Script.Weapon
 {
     public abstract class BulletController : MonoBehaviour
     {
-        [SerializeField] protected float timeToDestruction = 1;        
+        [SerializeField] protected float defoltTimeToDestruction = 1;        
         [SerializeField] protected float damage = 1;
         [SerializeField] protected float speed = 1;
+        [SerializeField] protected Rigidbody rb;
 
+
+        protected float timeToDestruction;
         protected Unit unit;
         protected Vector3 _pointToMovement;
         public void Initialize(Vector3 pointToMovement)
         {
             _pointToMovement = pointToMovement;
+            timeToDestruction = defoltTimeToDestruction;
+            gameObject.transform.LookAt(_pointToMovement);
+            rb.AddForce(gameObject.transform.forward * speed, ForceMode.Impulse);
         }
 
         protected void OnCollisionEnter(Collision collision)
         {
+            Debug.Log(collision.gameObject.name);
             if (collision.transform.gameObject.TryGetComponent(out unit))
             {
                 unit.TryCatchDamage(damage);
@@ -28,10 +35,6 @@ namespace Assets.Script.Weapon
         }
         void Update()
         {
-            if (timeToDestruction > 0)
-            {
-                gameObject.transform.Translate(_pointToMovement * speed * Time.deltaTime);
-            }
             if (timeToDestruction <= 0)
             {
                 Disable();
@@ -40,6 +43,8 @@ namespace Assets.Script.Weapon
         }
         private void Disable()
         {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             foreach (GameObject t in gameObject.scene.GetRootGameObjects())
             {
                 if (t.TryGetComponent<LabelPool>(out var marcer))

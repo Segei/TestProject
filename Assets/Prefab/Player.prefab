@@ -1117,8 +1117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72746b8f27ed0df4499acd36e4b516d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healsPoint: 5
-  _timeToDestroyDefaultValue: 5
+  timeToDestroyDefaultValue: 5
+  healsPoint: 5
+  weapon: {fileID: 0}
   PlaerMesh: {fileID: 3268819058827785280}
 --- !u!195 &3268819058689959799
 NavMeshAgent:
@@ -1332,7 +1333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f051684d453f644ac78d7d2ed9a4f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
+  ShootingPermit: 0
+  camera: {fileID: 0}
   _player: {fileID: 3268819058689959798}
 --- !u!1 &3268819058827785280
 GameObject:
@@ -1728,8 +1730,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4842678045956166941}
-  m_LocalRotation: {x: 0, y: 0.17974661, z: 0, w: 0.983713}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.22437117, z: -0, w: 0.9745038}
+  m_LocalPosition: {x: -0.015720129, y: 0, z: 0.0067710876}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 64788406031096435}
@@ -1738,7 +1740,7 @@ Transform:
   - {fileID: 7388091609410588433}
   m_Father: {fileID: 3268819058827785281}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 20.71, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 25.932, z: 0}
 --- !u!1 &4844663631760088479
 GameObject:
   m_ObjectHideFlags: 0
@@ -2639,6 +2641,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -158.77899
       objectReference: {fileID: 0}
+    - target: {fileID: 64883286283145902, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
 --- !u!1 &3269280831489378388 stripped
@@ -2663,6 +2669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49467571bae9e504eb17cd2fb04e2c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
   hitRate: 2
   _ammo: 80
   _ammoInMagazine: 8

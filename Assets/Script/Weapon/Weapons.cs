@@ -23,12 +23,10 @@ namespace Assets.Script.Weapon
         
         
         protected LabelPool pool = null;
-        protected UnityAction action;
         
 
         protected void Start()
         {
-            action += TryReload;
             foreach (Transform t in gameObject.GetComponentsInChildren<Transform>())
             {
                 t.gameObject.TryGetComponent(out barrel);
@@ -51,8 +49,7 @@ namespace Assets.Script.Weapon
         }
         private void OnDisable()
         {
-            button.onClick.RemoveListener(action);
-            action -= TryReload;
+            button.onClick.RemoveListener(TryReload);
         }
 
         protected void Update()
@@ -63,7 +60,7 @@ namespace Assets.Script.Weapon
             }
             if(button != null)
             {
-                button.onClick.AddListener(action);
+                button.onClick.AddListener(TryReload);
             }
         }
         public void Shoot(Vector3 pointToShoot)
@@ -77,7 +74,6 @@ namespace Assets.Script.Weapon
                     bullet.gameObject.SetActive(true);
                     bullet.gameObject.transform.parent = null;
                     bullet.gameObject.transform.position = barrel.transform.position;
-                    bullet.gameObject.transform.LookAt(pointToShoot);
                     bullet.Initialize(pointToShoot);
                 }
                 cooldown = 1 / hitRate;

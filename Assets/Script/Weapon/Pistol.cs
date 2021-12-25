@@ -9,7 +9,7 @@ namespace Assets.Script.Weapon
         protected override BulletController GetBullet()
         {
             PistolBullet bullet = null;
-            foreach (Transform t in pool.GetComponentsInChildren(typeof(Transform), true))
+            foreach (Transform t in pool.gameObject.GetComponentsInChildren(typeof(Transform), true))
             {
                 if (t.TryGetComponent(out bullet))
                 {

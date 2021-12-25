@@ -38,7 +38,7 @@ namespace Assets.Script.Units
 
         protected void Update()
         {
-            animator.SetFloat(name = "Speed", nav.velocity.magnitude);
+            animator.SetFloat("Speed", nav.velocity.magnitude);
             if (died && timeToDestroy < 0)
             {
                 Destroy(gameObject);

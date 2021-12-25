@@ -1,15 +1,19 @@
 using Assets.Script.Units;
 using UnityEngine;
 
-public class RayCastCamera : MonoBehaviour
+public class MyRayCastCamera : MonoBehaviour
 {
     public bool ShootingPermit = false;
-    
+
     [SerializeField] private Camera camera;
-    [SerializeField] private Player player;
-    
+    [SerializeField] private Player _player;
+
     private RaycastHit hit;
 
+    public void SetPlayer(Player player)
+    {
+        _player = player;
+    }
     void Start()
     {
         if (camera == null)
@@ -24,7 +28,7 @@ public class RayCastCamera : MonoBehaviour
                 Ray ray = camera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit))
                 {
-                    player.ReadyToShot(hit.collider.transform.position);
+                    _player.ReadyToShot(hit.point);
                 }
             }
         }

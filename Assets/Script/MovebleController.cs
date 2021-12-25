@@ -1,86 +1,100 @@
 using Assets.Script.Units;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MovebleController : MonoBehaviour
 {
+    public NavMeshAgent Nav => _nav;
+    public MyRayCastCamera Camera => _camera;
+    public Player Player => _player;
+
     [SerializeField] private Button BMove;
-    [SerializeField] private List<Transform> wayPoints;
-    [SerializeField] private List<Transform> enemyPoints;
-    [SerializeField] private NavMeshAgent nav;
+    [SerializeField] private List<Transform> wayPoints = null;
+    [SerializeField] private List<Transform> enemyPoints = null;
     [SerializeField] private float rotationSpeed = 1;
-    [SerializeField] private bool move;
-    [SerializeField] private Player player;
-    [SerializeField] private RayCastCamera camera;
-    [SerializeField] private Button buttonReload;
-    [SerializeField] private ViewAmmo viewAmmo;
-    
-    private int countWayPoint = 1;
+    [SerializeField] private WaveEnemy waveEnemy = null;
+
+    private MyRayCastCamera _camera;
+    private bool move = false;
+    private NavMeshAgent _nav;
+    private int countWayPoint = 0;
     private int countEnemyPoint = 0;
+    private Player _player;
+    private bool look;
+
+    public void SetPlayer(Player player)
+    {
+        _player = player;
+    }
+
+    public void SetNav(NavMeshAgent nav)
+    {
+        _nav = nav;
+    }
+    public void SetCamera(MyRayCastCamera camera)
+    {
+        _camera = camera;
+    }
+
 
     void Start()
     {
         BMove.gameObject.SetActive(true);
+        BMove.onClick.AddListener(OnClickButtonMove);
+        waveEnemy.EndWave += ReadyFoMove;
     }
 
-    public void OnClickButtonMove()
+    private void OnClickButtonMove()
     {
         BMove.gameObject.SetActive(false);
-        nav.SetDestination(wayPoints[countWayPoint++].position);
-        if (countWayPoint != 0 && countWayPoint != wayPoints.Count - 1) countEnemyPoint++;
+        _nav.SetDestination(wayPoints[++countWayPoint].position);
+        if (countWayPoint > 0 && countWayPoint != wayPoints.Count - 1)
+        {
+            countEnemyPoint++;
+            waveEnemy.SpawnNext();
+        }
+        look = false;
+        move = true;
+
+    }
+    private void ReadyFoMove()
+    {
+        BMove.gameObject.SetActive(true);
     }
     void Update()
     {
-        if (nav == null) TryGetNav();
-        if (nav != null && camera == null) TryGetCam();
-        if (player != null && player.weapon.button == null) player.weapon.button = buttonReload;
-        if (player != null && viewAmmo.Weapons == null)
+        if (!move)
         {
-            viewAmmo.SetWeapon(player.weapon);
-        }
-        if (move && nav.velocity.magnitude == 0)
-        {
-            if (countWayPoint > 1 && countWayPoint != wayPoints.Count - 1)
+            if (countWayPoint > 0 && countWayPoint < wayPoints.Count - 1 && !look)
             {
-                player.gameObject.transform.LookAt(new Vector3(enemyPoints[countEnemyPoint - 1].position.x, player.gameObject.transform.position.y, enemyPoints[countEnemyPoint - 1].position.z));
-                camera.ShootingPermit = true;
+                _player.gameObject.transform.LookAt(new Vector3(enemyPoints[countEnemyPoint - 1].position.x, _player.gameObject.transform.position.y, enemyPoints[countEnemyPoint - 1].position.z));
+                _camera.ShootingPermit = true;
+                look = true;
             }
         }
         else
         {
-            move = true;
-            camera.ShootingPermit = false;
+            _camera.ShootingPermit = false;
         }
-    }
-    private void TryGetCam()
-    {
-        foreach (Transform t in nav.gameObject.GetComponentsInChildren(typeof(Transform), true))
+        if (GetDistance(_player.transform.position, wayPoints[countWayPoint].position) == 0 && move)
         {
-            if (t.TryGetComponent(out camera))
-            {
-                break;
-            }
+            move = false;
         }
-    }
-    private void TryGetNav()
-    {
-        foreach (GameObject t in gameObject.scene.GetRootGameObjects())
+        if (GetDistance(_player.transform.position, wayPoints.Last().position) == 0)
         {
-            if (t.TryGetComponent(out player))
-            {
-                player.gameObject.TryGetComponent(out nav);
-                break;
-            }
+            SceneManager.LoadScene(0);
         }
+
     }
-    private void Rotate(Transform target)
+    private float GetDistance(Vector3 A, Vector3 B)
     {
-        Vector3 dir = Vector3.Cross(target.position, target.forward) - nav.gameObject.transform.forward;
-        dir.y = 0;
-        Quaternion rot = Quaternion.LookRotation(dir);
-        nav.gameObject.transform.rotation = Quaternion.Lerp(transform.rotation, rot, rotationSpeed * Time.deltaTime);
+        float result = 0;
+        result = Mathf.Abs(A.x - B.x) + Mathf.Abs(A.z - B.z);
+        return result;
     }
 }
