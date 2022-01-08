@@ -5,26 +5,29 @@ namespace Assets.Script.Units
 {
     public class Player : Unit
     {
-        public Weapons weapon;
-        
+
+
+        [SerializeField] private Weapons _weapon;
+        [SerializeField] private Transform SlotToWeapon;
         [SerializeField] private GameObject PlaerMesh;
-        
 
-        protected override void Start()
-        {
-            base.Start();
-            foreach (Transform t in gameObject.GetComponentsInChildren(typeof(Transform), true))
-            {
-                if (t.TryGetComponent(out weapon))
-                {
-                    break;
-                }
+        public Weapons Weapons => _weapon;
+
+        public void SetWeapon(GameObject weapon) {
+            if (_weapon != null) {
+               Destroy(_weapon.gameObject);
             }
+            GameObject t = Instantiate(weapon);
+            t.transform.parent = SlotToWeapon;
+            t.transform.localPosition = Vector3.zero;
+            t.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            t.transform.localScale = Vector3.one;
+           
+            _weapon = t.GetComponent<Weapons>();
         }
-
         public void WeaponReload()
         {
-            weapon.TryReload();
+            _weapon.TryReload();
         }
         protected override void Active()
         {
@@ -33,8 +36,7 @@ namespace Assets.Script.Units
         public void ReadyToShot(Vector3 pointShot)
         {
             PlaerMesh.transform.LookAt(new Vector3(pointShot.x, PlaerMesh.transform.position.y, pointShot.z));
-
-            weapon.Shoot(pointShot);
+            _weapon.Shoot(pointShot);
         }
     }
 }

@@ -1,6 +1,4 @@
 using Assets.Script.Units;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Script.Weapon
@@ -33,7 +31,7 @@ namespace Assets.Script.Weapon
             }
             Disable();
         }
-        void Update()
+        private void Update()
         {
             if (timeToDestruction <= 0)
             {

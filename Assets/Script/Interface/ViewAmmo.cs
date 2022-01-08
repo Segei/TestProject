@@ -1,6 +1,4 @@
 using Assets.Script.Weapon;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -24,8 +22,5 @@ public class ViewAmmo : MonoBehaviour
         UpdateAmmo();
         _weapon.changeAmmo += UpdateAmmo;
     }
-    public void OnDisable()
-    {
-        _weapon.changeAmmo -= UpdateAmmo;
-    }
+
 }

@@ -14,12 +14,12 @@ public class MyRayCastCamera : MonoBehaviour
     {
         _player = player;
     }
-    void Start()
+    private void Start()
     {
         if (camera == null)
             gameObject.TryGetComponent(out camera);
     }
-    void Update()
+    private void Update()
     {
         if (ShootingPermit)
         {

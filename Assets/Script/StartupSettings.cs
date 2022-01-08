@@ -1,8 +1,8 @@
 using Assets.Script.Units;
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StartupSettings : MonoBehaviour
@@ -11,27 +11,31 @@ public class StartupSettings : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Button buttonReload;
     [SerializeField] private ViewAmmo viewAmmo;
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject weaponPrefab;
+    [SerializeField] private Transform startPoint;
 
-
-    void Update()
+    private void Start()
     {
-        if (player == null) TryGetPlayer();
-        if (player!= null && moveble.Nav == null) TryGetNav();
-        if (player != null && moveble.Camera == null) TryGetCam();
-        if (player != null && player.weapon.button == null) player.weapon.button = buttonReload;
-        if (player != null && viewAmmo.Weapons == null) viewAmmo.SetWeapon(player.weapon);
+        GameObject t = Instantiate(playerPrefab);
+        t.transform.position = startPoint.position;
+        player = t.GetComponent<Player>();
+        moveble.SetPlayer(player);
+        TryGetCam();
+        TryGetNav();
+        player.SetWeapon(weaponPrefab);
+        player.Weapons.SetButtonReload(buttonReload);
+        viewAmmo.SetWeapon(player.Weapons);
+
     }
-    private void TryGetPlayer()
+    private void Update()
     {
-        foreach (GameObject t in gameObject.scene.GetRootGameObjects())
+        if (GetDistance(player.transform.position, moveble.WayPoints.Last().position) == 0)
         {
-            if (t.TryGetComponent(out player))
-            {
-                moveble.SetPlayer(player);
-                break;
-            }
+            SceneManager.LoadScene(0);
         }
     }
+
     private void TryGetCam()
     {
         foreach (Transform t in player.GetComponentsInChildren(typeof(Transform), true))
@@ -43,16 +47,22 @@ public class StartupSettings : MonoBehaviour
                 break;
             }
         }
-    }    
+    }
     private void TryGetNav()
     {
         foreach (Transform t in player.GetComponentsInChildren(typeof(Transform), true))
         {
             if (t.TryGetComponent<NavMeshAgent>(out var n))
-            {                
+            {
                 moveble.SetNav(n);
                 break;
             }
         }
+    }
+    private float GetDistance(Vector3 A, Vector3 B)
+    {
+        float result = 0;
+        result = Mathf.Abs(A.x - B.x) + Mathf.Abs(A.z - B.z);
+        return result;
     }
 }

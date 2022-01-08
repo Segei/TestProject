@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -11,19 +9,20 @@ namespace Assets.Script.Weapon
         public int Ammo => _ammo;
         public int AmmoInMagazine => _ammoInMagazine;
         public UnityAction changeAmmo;
-        public Button button = null;
-        
+
+
         [SerializeField] protected float hitRate;
         [SerializeField] protected int _ammo;
         [SerializeField] protected int _ammoInMagazine;
         [SerializeField] protected int magazineSize;
-        
+
+        protected Button _button;
         protected float cooldown;
         protected LabelBarrel barrel;
-        
-        
+
+
         protected LabelPool pool = null;
-        
+
 
         protected void Start()
         {
@@ -46,22 +45,20 @@ namespace Assets.Script.Weapon
             {
                 Debug.LogError("No pool on scene.");
             }
+            
         }
-        private void OnDisable()
+        public void SetButtonReload(Button button)
         {
-            button.onClick.RemoveListener(TryReload);
+            _button = button;
+            _button.onClick.AddListener(TryReload);
         }
-
         protected void Update()
         {
             if (cooldown > 0)
             {
                 cooldown -= Time.deltaTime;
             }
-            if(button != null)
-            {
-                button.onClick.AddListener(TryReload);
-            }
+
         }
         public void Shoot(Vector3 pointToShoot)
         {
@@ -87,9 +84,10 @@ namespace Assets.Script.Weapon
         protected abstract BulletController GetBullet();
         public void TryReload()
         {
+            Debug.Log("Reload");
             if (_ammo >= _ammoInMagazine - magazineSize)
             {
-                _ammo -= magazineSize - _ammoInMagazine ;
+                _ammo -= magazineSize - _ammoInMagazine;
                 _ammoInMagazine = magazineSize;
             }
             else if (_ammo != 0)

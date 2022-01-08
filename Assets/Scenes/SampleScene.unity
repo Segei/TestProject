@@ -1942,7 +1942,6 @@ GameObject:
   - component: {fileID: 781761267}
   - component: {fileID: 781761266}
   - component: {fileID: 781761265}
-  - component: {fileID: 781761268}
   - component: {fileID: 781761269}
   - component: {fileID: 781761270}
   m_Layer: 0
@@ -2000,20 +1999,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &781761268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 781761264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52bb44de5070ffb44b521e8245e847ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 2421885796778276159, guid: b1b2212da35978b48b7dd11e7a44a649, type: 3}
-  startPoint: {fileID: 572087006}
 --- !u!114 &781761269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2027,7 +2012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BMove: {fileID: 2031102355}
-  wayPoints:
+  _wayPoints:
   - {fileID: 572087006}
   - {fileID: 1807843919}
   - {fileID: 78738241}
@@ -2039,6 +2024,7 @@ MonoBehaviour:
   - {fileID: 500198029}
   rotationSpeed: 0.1
   waveEnemy: {fileID: 467909384}
+  _player: {fileID: 0}
 --- !u!114 &781761270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2055,6 +2041,9 @@ MonoBehaviour:
   player: {fileID: 0}
   buttonReload: {fileID: 1951351125}
   viewAmmo: {fileID: 1879887746}
+  playerPrefab: {fileID: 2421885796778276159, guid: b1b2212da35978b48b7dd11e7a44a649, type: 3}
+  weaponPrefab: {fileID: 8532748477414793451, guid: d8315fd9602d95341bdc63b8a17990f5, type: 3}
+  startPoint: {fileID: 572087006}
 --- !u!1 &890139607
 GameObject:
   m_ObjectHideFlags: 0

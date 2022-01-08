@@ -1,20 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Assets.Script.Units
 {
     public abstract class Unit : MonoBehaviour
-    { 
+    {
         [SerializeField] protected float timeToDestroyDefaultValue = 5;
         [SerializeField] protected float healsPoint = 5;
-        
+
         protected NavMeshAgent nav;
         protected Animator animator;
         protected bool died = false;
         protected float timeToDestroy;
-       
+
 
         protected virtual void Start()
         {
@@ -39,14 +38,6 @@ namespace Assets.Script.Units
         protected void Update()
         {
             animator.SetFloat("Speed", nav.velocity.magnitude);
-            if (died && timeToDestroy < 0)
-            {
-                Destroy(gameObject);
-            }
-            if(died && timeToDestroy > 0)
-            {
-                timeToDestroy -= Time.deltaTime;
-            }
             if (!died)
                 Active();
         }
@@ -54,7 +45,13 @@ namespace Assets.Script.Units
         protected virtual void Death()
         {
             died = true;
-            timeToDestroy = timeToDestroyDefaultValue;
+            StartCoroutine(DeleteBody(timeToDestroyDefaultValue));
+        }
+        protected virtual IEnumerator DeleteBody(float timeToDestroyBody)
+        {
+            yield return new WaitForSeconds(timeToDestroyBody);
+            Destroy(gameObject);
+            yield return null;
         }
 
     }

@@ -247,7 +247,7 @@ Transform:
   - {fileID: 4458320108033392646}
   - {fileID: 6039708768663138146}
   - {fileID: 6370126895410535568}
-  - {fileID: 3264477491982776142}
+  - {fileID: 2735832255407047716}
   m_Father: {fileID: 1066917105911545286}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1119,7 +1119,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToDestroyDefaultValue: 5
   healsPoint: 5
-  weapon: {fileID: 0}
+  _weapon: {fileID: 0}
+  SlotToWeapon: {fileID: 2735832255407047716}
   PlaerMesh: {fileID: 3268819058827785280}
 --- !u!195 &3268819058689959799
 NavMeshAgent:
@@ -1237,6 +1238,36 @@ Transform:
   m_Father: {fileID: 4458320108033392646}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3175548768750325693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2735832255407047716}
+  m_Layer: 0
+  m_Name: SlotToWeapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2735832255407047716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3175548768750325693}
+  m_LocalRotation: {x: -0.4579585, y: 0.52733153, z: 0.5027191, w: 0.50938106}
+  m_LocalPosition: {x: -0.23, y: 0.73, z: 0.25}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_Children: []
+  m_Father: {fileID: 3812439296421312422}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: -94.621, y: 252.375, z: -158.77899}
 --- !u!1 &3268819058223058489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2574,103 +2605,3 @@ Transform:
   m_Father: {fileID: 7835946351768227307}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &3268819057602358836
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 3812439296421312422}
-    m_Modifications:
-    - target: {fileID: 1121525155587680, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_Name
-      value: SM_Wep_WaterPistol_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.73
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.50938106
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.4579585
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.52733153
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.5027191
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -94.621
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 252.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -158.77899
-      objectReference: {fileID: 0}
-    - target: {fileID: 64883286283145902, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
---- !u!1 &3269280831489378388 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1121525155587680, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-  m_PrefabInstance: {fileID: 3268819057602358836}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3264477491982776142 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4764624344734074, guid: c6865c562fd3f2841a92dc0cbbd6b4b4, type: 3}
-  m_PrefabInstance: {fileID: 3268819057602358836}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3268819058037173519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3269280831489378388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49467571bae9e504eb17cd2fb04e2c11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  hitRate: 2
-  _ammo: 80
-  _ammoInMagazine: 8
-  magazineSize: 8

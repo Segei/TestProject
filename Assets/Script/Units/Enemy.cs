@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +7,8 @@ namespace Assets.Script.Units
     {
         [SerializeField] private Collider collider; 
         public UnityAction<Enemy> Died;
+
+
         protected override void Active()
         {            
         }

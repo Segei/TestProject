@@ -1,10 +1,7 @@
 using Assets.Script.Units;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MovebleController : MonoBehaviour
@@ -12,9 +9,10 @@ public class MovebleController : MonoBehaviour
     public NavMeshAgent Nav => _nav;
     public MyRayCastCamera Camera => _camera;
     public Player Player => _player;
+    public List<Transform> WayPoints => _wayPoints;
 
     [SerializeField] private Button BMove;
-    [SerializeField] private List<Transform> wayPoints = null;
+    [SerializeField] private List<Transform> _wayPoints = null;
     [SerializeField] private List<Transform> enemyPoints = null;
     [SerializeField] private float rotationSpeed = 1;
     [SerializeField] private WaveEnemy waveEnemy = null;
@@ -24,7 +22,7 @@ public class MovebleController : MonoBehaviour
     private NavMeshAgent _nav;
     private int countWayPoint = 0;
     private int countEnemyPoint = 0;
-    private Player _player;
+    [SerializeField] private Player _player;
     private bool look;
 
     public void SetPlayer(Player player)
@@ -42,7 +40,7 @@ public class MovebleController : MonoBehaviour
     }
 
 
-    void Start()
+    private void Start()
     {
         BMove.gameObject.SetActive(true);
         BMove.onClick.AddListener(OnClickButtonMove);
@@ -52,8 +50,8 @@ public class MovebleController : MonoBehaviour
     private void OnClickButtonMove()
     {
         BMove.gameObject.SetActive(false);
-        _nav.SetDestination(wayPoints[++countWayPoint].position);
-        if (countWayPoint > 0 && countWayPoint != wayPoints.Count - 1)
+        _nav.SetDestination(_wayPoints[++countWayPoint].position);
+        if (countWayPoint > 0 && countWayPoint != _wayPoints.Count - 1)
         {
             countEnemyPoint++;
             waveEnemy.SpawnNext();
@@ -66,11 +64,11 @@ public class MovebleController : MonoBehaviour
     {
         BMove.gameObject.SetActive(true);
     }
-    void Update()
+    private void Update()
     {
         if (!move)
         {
-            if (countWayPoint > 0 && countWayPoint < wayPoints.Count - 1 && !look)
+            if (countWayPoint > 0 && countWayPoint < _wayPoints.Count - 1 && !look)
             {
                 _player.gameObject.transform.LookAt(new Vector3(enemyPoints[countEnemyPoint - 1].position.x, _player.gameObject.transform.position.y, enemyPoints[countEnemyPoint - 1].position.z));
                 _camera.ShootingPermit = true;
@@ -81,15 +79,10 @@ public class MovebleController : MonoBehaviour
         {
             _camera.ShootingPermit = false;
         }
-        if (GetDistance(_player.transform.position, wayPoints[countWayPoint].position) == 0 && move)
+        if (GetDistance(_player.gameObject.transform.position, _wayPoints[countWayPoint].position) == 0 && move)
         {
             move = false;
         }
-        if (GetDistance(_player.transform.position, wayPoints.Last().position) == 0)
-        {
-            SceneManager.LoadScene(0);
-        }
-
     }
     private float GetDistance(Vector3 A, Vector3 B)
     {
