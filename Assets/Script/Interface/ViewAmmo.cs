@@ -13,7 +13,7 @@ public class ViewAmmo : MonoBehaviour
 
     public void UpdateAmmo()
     {
-        text.text = _weapon.AmmoInMagazine + "/" + _weapon.Ammo;   
+        text.text = _weapon.AmmoInMagazine + "/" + _weapon.TotalAmmo;   
     }
 
     public void SetWeapon(Weapons weapon)

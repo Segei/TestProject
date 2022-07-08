@@ -13,13 +13,11 @@ namespace Assets.Script.Weapon
 
         protected float timeToDestruction;
         protected Unit unit;
-        protected Vector3 _pointToMovement;
-        public void Initialize(Vector3 pointToMovement)
+        public void Shoot()
         {
-            _pointToMovement = pointToMovement;
             timeToDestruction = defoltTimeToDestruction;
-            gameObject.transform.LookAt(_pointToMovement);
             rb.AddForce(gameObject.transform.forward * speed, ForceMode.Impulse);
+
         }
 
         protected void OnCollisionEnter(Collision collision)
@@ -43,15 +41,13 @@ namespace Assets.Script.Weapon
         {
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            foreach (GameObject t in gameObject.scene.GetRootGameObjects())
-            {
-                if (t.TryGetComponent<LabelPool>(out var marcer))
-                {
-                    gameObject.transform.parent = marcer.gameObject.transform;
-                    gameObject.transform.localPosition = Vector3.zero;
-                    gameObject.SetActive(false);
-                }
-            }
+            gameObject.transform.SetParent(Pool.PoolInitialize.gameObject.transform);
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.SetActive(false);
+        }
+        public override bool Equals(object other)
+        {
+            return this.GetType() == other.GetType();
         }
     }
 }

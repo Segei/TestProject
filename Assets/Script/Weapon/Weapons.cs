@@ -4,48 +4,34 @@ using UnityEngine.UI;
 
 namespace Assets.Script.Weapon
 {
-    public abstract class Weapons : MonoBehaviour
+    public class Weapons : MonoBehaviour
     {
-        public int Ammo => _ammo;
+        public int TotalAmmo => _totalAmmo;
         public int AmmoInMagazine => _ammoInMagazine;
         public UnityAction changeAmmo;
+        public GameObject Bullet;
 
-
-        [SerializeField] protected float hitRate;
-        [SerializeField] protected int _ammo;
-        [SerializeField] protected int _ammoInMagazine;
-        [SerializeField] protected int magazineSize;
+        [SerializeField] protected int _totalAmmo;
+        [SerializeField] protected float _hitRate;
+        protected int _ammoInMagazine;
+        [SerializeField] protected int _magazineSize;
 
         protected Button _button;
-        protected float cooldown;
-        protected LabelBarrel barrel;
-
-
-        protected LabelPool pool = null;
+        protected float _cooldown;
+        protected LabelBarrel _barrel;
 
 
         protected void Start()
         {
             foreach (Transform t in gameObject.GetComponentsInChildren<Transform>())
             {
-                t.gameObject.TryGetComponent(out barrel);
+                t.gameObject.TryGetComponent(out _barrel);
             }
-            if (barrel == null)
+            if (_barrel == null)
             {
                 Debug.LogError(gameObject.name + " doesn't have script 'MarcerBarrel' on barrel point");
             }
-            foreach (GameObject t in gameObject.scene.GetRootGameObjects())
-            {
-                if (t.TryGetComponent(out pool))
-                {
-                    break;
-                }
-            }
-            if (pool == null)
-            {
-                Debug.LogError("No pool on scene.");
-            }
-            
+            _cooldown = 1 / _hitRate;
         }
         public void SetButtonReload(Button button)
         {
@@ -54,46 +40,46 @@ namespace Assets.Script.Weapon
         }
         protected void Update()
         {
-            if (cooldown > 0)
+            if (_cooldown > 0)
             {
-                cooldown -= Time.deltaTime;
+                _cooldown -= Time.deltaTime;
             }
 
         }
         public void Shoot(Vector3 pointToShoot)
         {
-            if (cooldown <= 0 && _ammoInMagazine > 0)
+            if (_ammoInMagazine == 0)
+            {
+                Debug.Log("Need reload");
+                return;
+            }
+            if (_cooldown <= 0)
             {
                 _ammoInMagazine--;
-                BulletController bullet = GetBullet();
+                BulletController bullet = Pool.PoolInitialize.GetBullet(Bullet);
                 if (bullet != null)
                 {
                     bullet.gameObject.SetActive(true);
                     bullet.gameObject.transform.parent = null;
-                    bullet.gameObject.transform.position = barrel.transform.position;
-                    bullet.Initialize(pointToShoot);
+                    bullet.gameObject.transform.position = _barrel.transform.position;
+                    bullet.gameObject.transform.rotation = _barrel.transform.rotation;
+                    bullet.Shoot();
                 }
-                cooldown = 1 / hitRate;
-            }
-            if (_ammoInMagazine == 0)
-            {
-                Debug.Log("Need reload");
+                
             }
             changeAmmo?.Invoke();
         }
-        protected abstract BulletController GetBullet();
         public void TryReload()
         {
-            Debug.Log("Reload");
-            if (_ammo >= _ammoInMagazine - magazineSize)
+            if (_totalAmmo >= _ammoInMagazine - _magazineSize)
             {
-                _ammo -= magazineSize - _ammoInMagazine;
-                _ammoInMagazine = magazineSize;
+                _totalAmmo -= _magazineSize - _ammoInMagazine;
+                _ammoInMagazine = _magazineSize;
             }
-            else if (_ammo != 0)
+            else if (_totalAmmo != 0)
             {
-                _ammoInMagazine += _ammo;
-                _ammo -= _ammo;
+                _ammoInMagazine += _totalAmmo;
+                _totalAmmo -= _totalAmmo;
             }
             changeAmmo?.Invoke();
         }
